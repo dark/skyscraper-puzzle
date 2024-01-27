@@ -21,11 +21,24 @@
 
 #include <vector>
 
+// Defines various ways to initialize a new board.
+enum class BoardInitializer {
+  // An invalid board, with zeros in all cells
+  EMPTY = 0,
+  // A valid board, where the first row is (1, 2, ... n), the second
+  // row is (n, 1, ... n-1), and the last row is (2, 3, ... 1).
+  DIAGONAL_INCREASING,
+};
+
 class Board {
  public:
   // Builds an empty board with `size` rows and `size` columns. An
   // empty board has zero in all cells and is therefore invalid.
   explicit Board(const int size);
+
+  // Builds a board with `size` rows and `size` columns, with initial
+  // contents specified by the initializer.
+  Board(const int size, const BoardInitializer initializer);
 
   // Retrieves the board size.
   int size() const;

@@ -21,7 +21,9 @@
 #include <cstdlib>
 #include <iostream>
 
-Board::Board(const int size)
+Board::Board(const int size) : Board(size, BoardInitializer::EMPTY) {}
+
+Board::Board(const int size, const BoardInitializer initializer)
   : size_(size) {
   if (size <= 0) {
     std::cerr << "Bad board size: " << size << std::endl;
@@ -31,5 +33,19 @@ Board::Board(const int size)
   board_.resize(size);
   for (int i = 0; i < size; ++i) {
     board_[i].resize(size);
+  }
+
+  switch (initializer) {
+  case BoardInitializer::EMPTY:
+    // Do nothing.
+    break;
+  case BoardInitializer::DIAGONAL_INCREASING:
+    for (int row = 0; row < size; ++row) {
+      for (int column = 0; column < size; ++column) {
+        int value = (size + column - row) % size + 1;
+        board_[row][column] = value;
+      }
+    }
+    break;
   }
 }

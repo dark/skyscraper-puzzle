@@ -22,4 +22,6 @@ project(skyscraper-puzzle
   HOMEPAGE_URL "https://github.com/dark/skyscraper-puzzle"
   LANGUAGES CXX)
 
-add_executable(skyscraper main.cc)
+add_executable(skyscraper
+  board.cc
+  main.cc)

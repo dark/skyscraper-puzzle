@@ -18,7 +18,18 @@
 
 #include "board.h"
 
-int main(void) {
-  Board b{5};
-  return 0;
+#include <cstdlib>
+#include <iostream>
+
+Board::Board(const int size)
+  : size_(size) {
+  if (size <= 0) {
+    std::cerr << "Bad board size: " << size << std::endl;
+    std::abort();
+  }
+
+  board_.resize(size);
+  for (int i = 0; i < size; ++i) {
+    board_[i].resize(size);
+  }
 }

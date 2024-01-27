@@ -16,9 +16,20 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "board.h"
+#ifndef BOARD_H
+#define BOARD_H
 
-int main(void) {
-  Board b{5};
-  return 0;
-}
+#include <vector>
+
+class Board {
+ public:
+  explicit Board(const int size);
+
+ private:
+  const int size_;
+
+  // Each inner vector is a row, and the outer vector selects the row.
+  std::vector<std::vector<int>> board_;
+};
+
+#endif

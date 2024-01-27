@@ -64,6 +64,9 @@ class Board {
   // is invalid, returns false.
   bool is_column_valid(const int column) const;
 
+  // Prints the board to standard output.
+  void print() const;
+
  private:
   const int size_;
 

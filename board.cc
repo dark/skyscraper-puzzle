@@ -49,3 +49,12 @@ Board::Board(const int size, const BoardInitializer initializer)
     break;
   }
 }
+
+void Board::print() const {
+  for (int row = 0; row < size_; ++row) {
+    for (int column = 0; column < size_; ++column) {
+      std::cout << board_[row][column] << " ";
+    }
+    std::cout << std::endl;
+  }
+}

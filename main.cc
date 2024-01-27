@@ -19,6 +19,8 @@
 #include "board.h"
 
 int main(void) {
-  Board b{5};
+  Board b{5, BoardInitializer::DIAGONAL_INCREASING};
+  b.print();
+
   return 0;
 }

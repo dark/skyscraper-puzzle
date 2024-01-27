@@ -58,3 +58,37 @@ void Board::print() const {
     std::cout << std::endl;
   }
 }
+
+bool Board::swap_rows(const int first, const int second) {
+  if (first < 0 || first >= size_ || second < 0 || second >= size_) {
+    // Invalid request.
+    return false;
+  }
+
+  if (first == second) {
+    // NOP
+    return true;
+  }
+
+  board_[first].swap(board_[second]);
+  return true;
+}
+
+bool Board::swap_columns(const int first, const int second) {
+  if (first < 0 || first >= size_ || second < 0 || second >= size_) {
+    // Invalid request.
+    return false;
+  }
+
+  if (first == second) {
+    // NOP
+    return true;
+  }
+
+  for (int row = 0; row < size_; ++row) {
+    int tmp = board_[row][first];
+    board_[row][first] = board_[row][second];
+    board_[row][second] = tmp;
+  }
+  return true;
+}

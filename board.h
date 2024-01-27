@@ -67,6 +67,18 @@ class Board {
   // Prints the board to standard output.
   void print() const;
 
+  // Swaps two rows by index, if both indices are valid, and returns
+  // true. Otherwise, does nothing and returns false.
+  //
+  // This operation preserves the validity status of the board.
+  bool swap_rows(const int first, const int second);
+
+  // Swaps two columns by index, if both indices are valid, and
+  // returns true. Otherwise, does nothing and returns false.
+  //
+  // This operation preserves the validity status of the board.
+  bool swap_columns(const int first, const int second);
+
  private:
   const int size_;
 

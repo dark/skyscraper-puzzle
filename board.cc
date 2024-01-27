@@ -25,14 +25,14 @@ Board::Board(const int size) : Board(size, BoardInitializer::EMPTY) {}
 
 Board::Board(const int size, const BoardInitializer initializer)
   : size_(size) {
-  if (size <= 0) {
-    std::cerr << "Bad board size: " << size << std::endl;
+  if (size_ <= 0) {
+    std::cerr << "Bad board size: " << size_ << std::endl;
     std::abort();
   }
 
-  board_.resize(size);
-  for (int i = 0; i < size; ++i) {
-    board_[i].resize(size);
+  board_.resize(size_);
+  for (int i = 0; i < size_; ++i) {
+    board_[i].resize(size_);
   }
 
   switch (initializer) {
@@ -40,9 +40,9 @@ Board::Board(const int size, const BoardInitializer initializer)
     // Do nothing.
     break;
   case BoardInitializer::DIAGONAL_INCREASING:
-    for (int row = 0; row < size; ++row) {
-      for (int column = 0; column < size; ++column) {
-        int value = (size + column - row) % size + 1;
+    for (int row = 0; row < size_; ++row) {
+      for (int column = 0; column < size_; ++column) {
+        int value = (size_ + column - row) % size_ + 1;
         board_[row][column] = value;
       }
     }

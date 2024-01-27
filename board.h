@@ -23,7 +23,33 @@
 
 class Board {
  public:
+  // Builds an empty board with `size` rows and `size` columns. An
+  // empty board has zero in all cells and is therefore invalid.
   explicit Board(const int size);
+
+  // Retrieves the board size.
+  int size() const;
+
+  // Returns the entry at the specified row and column. This could be
+  // zero if the cell was never written to.
+  int at(const int row, const int column) const;
+
+  // Sets the entry at the specified row and column, and returns
+  // whether the write was successful. The write is disallowed if the
+  // value is < 1 or >= size. Note that a write could turn a
+  // previously-valid board into an invalid one.
+  bool set(const int value, const int row, const int column);
+
+  // Returns whether the entire board is valid.
+  bool is_valid() const;
+
+  // Returns whether the a given row is valid. If the row number is
+  // invalid, returns false.
+  bool is_row_valid(const int row) const;
+
+  // Returns whether the a given column is valid. If the column number
+  // is invalid, returns false.
+  bool is_column_valid(const int column) const;
 
  private:
   const int size_;

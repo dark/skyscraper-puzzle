@@ -21,10 +21,42 @@
 
 #include <vector>
 
+class Board; // fwd decl
+
 using RowIterator = std::vector<int>::const_iterator;
 using ReverseRowIterator = std::vector<int>::const_reverse_iterator;
 
-class ColumnIterator {};
-class ReverseColumnIterator {};
+class ColumnIterator {
+public:
+  ColumnIterator(const Board& board, const int column, const int starting_row);
+
+  // Operators overloads
+  bool operator==(const ColumnIterator& rhs) const;
+  bool operator!=(const ColumnIterator& rhs) const;
+  int operator*();
+  ColumnIterator& operator++();
+
+private:
+  const Board& board_;
+  const int column_;
+  const int end_row_;
+  int current_row_;
+};
+
+class ReverseColumnIterator {
+public:
+  ReverseColumnIterator(const Board& board, const int column, const int starting_row);
+
+  // Operators overloads
+  bool operator==(const ReverseColumnIterator& rhs) const;
+  bool operator!=(const ReverseColumnIterator& rhs) const;
+  int operator*();
+  ReverseColumnIterator& operator++();
+
+private:
+  const Board& board_;
+  const int column_;
+  int current_row_;
+};
 
 #endif

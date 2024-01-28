@@ -18,3 +18,64 @@
 
 #include "board_iterators.h"
 
+#include <cstdlib>
+#include <iostream>
+#include "board.h"
+
+ColumnIterator::ColumnIterator(const Board& board, const int column, const int starting_row)
+  : board_(board), column_(column), end_row_(board_.size()), current_row_(starting_row) {
+  if (end_row_ <= 0) {
+    std::cerr << "Bad last row: " << end_row_ << std::endl;
+    std::abort();
+  }
+
+  if (current_row_ > end_row_) {
+    std::cerr << "Bad current row: " << current_row_ << std::endl;
+    std::abort();
+  }
+}
+
+bool ColumnIterator::operator==(const ColumnIterator& rhs) const {
+  return column_ == rhs.column_ && end_row_ == rhs.end_row_
+    && current_row_ == rhs.current_row_;
+}
+
+bool ColumnIterator::operator!=(const ColumnIterator& rhs) const {
+  return !(*this == rhs);
+}
+
+int ColumnIterator::operator*() {
+  return board_.at(current_row_, column_);
+}
+
+ColumnIterator& ColumnIterator::operator++() {
+  if (current_row_ < end_row_) {
+    ++current_row_;
+  }
+
+  return *this;
+}
+
+ReverseColumnIterator::ReverseColumnIterator(const Board& board, const int column, const int starting_row)
+  : board_(board), column_(column), current_row_(starting_row) {
+}
+
+bool ReverseColumnIterator::operator==(const ReverseColumnIterator& rhs) const {
+  return column_ == rhs.column_ && current_row_ == rhs.current_row_;
+}
+
+bool ReverseColumnIterator::operator!=(const ReverseColumnIterator& rhs) const {
+  return !(*this == rhs);
+}
+
+int ReverseColumnIterator::operator*() {
+  return board_.at(current_row_, column_);
+}
+
+ReverseColumnIterator& ReverseColumnIterator::operator++() {
+  if (current_row_ >= 0) {
+    --current_row_;
+  }
+
+  return *this;
+}

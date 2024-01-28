@@ -24,4 +24,7 @@
 using RowIterator = std::vector<int>::const_iterator;
 using ReverseRowIterator = std::vector<int>::const_reverse_iterator;
 
+class ColumnIterator {};
+class ReverseColumnIterator {};
+
 #endif

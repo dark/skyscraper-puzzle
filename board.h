@@ -86,6 +86,12 @@ class Board {
   ReverseRowIterator row_crbegin(const int row) const;
   ReverseRowIterator row_crend(const int row) const;
 
+  // Iterators for reading columns (forward and backward)
+  ColumnIterator column_cbegin(const int column) const;
+  ColumnIterator column_cend(const int column) const;
+  ReverseColumnIterator column_crbegin(const int column) const;
+  ReverseColumnIterator column_crend(const int column) const;
+
  private:
   const int size_;
 

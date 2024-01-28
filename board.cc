@@ -50,6 +50,15 @@ Board::Board(const int size, const BoardInitializer initializer)
   }
 }
 
+int Board::at(const int row, const int column) const {
+  if (row < 0 || row >= size_ || row < 0 || row >= size_) {
+    std::cerr << "Bad access at {" << row << ", " << column << "}" << std::endl;
+    std::abort();
+  }
+
+  return board_[row][column];
+}
+
 void Board::print() const {
   for (int row = 0; row < size_; ++row) {
     for (int column = 0; column < size_; ++column) {

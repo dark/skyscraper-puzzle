@@ -20,6 +20,7 @@
 #define BOARD_H
 
 #include <vector>
+#include "board_iterators.h"
 
 // Defines various ways to initialize a new board.
 enum class BoardInitializer {
@@ -78,6 +79,12 @@ class Board {
   //
   // This operation preserves the validity status of the board.
   bool swap_columns(const int first, const int second);
+
+  // Iterators for reading rows (forward and backward)
+  RowIterator row_cbegin(const int row) const;
+  RowIterator row_cend(const int row) const;
+  ReverseRowIterator row_crbegin(const int row) const;
+  ReverseRowIterator row_crend(const int row) const;
 
  private:
   const int size_;

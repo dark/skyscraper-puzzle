@@ -24,5 +24,6 @@ project(skyscraper-puzzle
 
 add_executable(skyscraper
   board.cc
+  board_iterators.cc
   main.cc)
 target_compile_options(skyscraper PRIVATE -Wall -O2)

@@ -92,3 +92,39 @@ bool Board::swap_columns(const int first, const int second) {
   }
   return true;
 }
+
+RowIterator Board::row_cbegin(const int row) const {
+  if (row < 0 || row >= size_) {
+    // For invalid accesses, return a zero-length row.
+    return board_[0].cend();
+  }
+
+  return board_[row].cbegin();
+}
+
+RowIterator Board::row_cend(const int row) const {
+  if (row < 0 || row >= size_) {
+    // For invalid accesses, return a zero-length row.
+    return board_[0].cend();
+  }
+
+  return board_[row].cend();
+}
+
+ReverseRowIterator Board::row_crbegin(const int row) const {
+  if (row < 0 || row >= size_) {
+    // For invalid accesses, return a zero-length row.
+    return board_[0].crend();
+  }
+
+  return board_[row].crbegin();
+}
+
+ReverseRowIterator Board::row_crend(const int row) const {
+  if (row < 0 || row >= size_) {
+    // For invalid accesses, return a zero-length row.
+    return board_[0].crend();
+  }
+
+  return board_[row].crend();
+}

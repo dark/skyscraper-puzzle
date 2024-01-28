@@ -51,7 +51,6 @@ Puzzle::Puzzle(const int size)
 }
 
 Puzzle::Puzzle(const Board& board) : Puzzle(board.size()) {
-#if 0
   // Fill the top and bottom vectors
   for (int column = 0; column < size_; ++column) {
     top_[column] = compute_visibility(board.column_cbegin(column),
@@ -59,7 +58,6 @@ Puzzle::Puzzle(const Board& board) : Puzzle(board.size()) {
     bottom_[column] = compute_visibility(board.column_crbegin(column),
                                          board.column_crend(column));
   }
-#endif
   // Fill the left and right vectors
   for (int row = 0; row < size_; ++row) {
     left_[row] = compute_visibility(board.row_cbegin(row),

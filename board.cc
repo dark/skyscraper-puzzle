@@ -128,3 +128,39 @@ ReverseRowIterator Board::row_crend(const int row) const {
 
   return board_[row].crend();
 }
+
+ColumnIterator Board::column_cbegin(const int column) const {
+  if (column < 0 || column >= size_) {
+    // For invalid accesses, return a zero-length column.
+    return ColumnIterator(*this, 0, size_);
+  }
+
+  return ColumnIterator(*this, column, 0);
+}
+
+ColumnIterator Board::column_cend(const int column) const {
+  if (column < 0 || column >= size_) {
+    // For invalid accesses, return a zero-length column.
+    return ColumnIterator(*this, 0, size_);
+  }
+
+  return ColumnIterator(*this, column, size_);
+}
+
+ReverseColumnIterator Board::column_crbegin(const int column) const {
+  if (column < 0 || column >= size_) {
+    // For invalid accesses, return a zero-length column.
+    return ReverseColumnIterator(*this, 0, -1);
+  }
+
+  return ReverseColumnIterator(*this, column, size_ - 1);
+}
+
+ReverseColumnIterator Board::column_crend(const int column) const {
+  if (column < 0 || column >= size_) {
+    // For invalid accesses, return a zero-length column.
+    return ReverseColumnIterator(*this, 0, -1);
+  }
+
+  return ReverseColumnIterator(*this, column, -1);
+}

@@ -18,8 +18,24 @@
 
 #include "puzzle.h"
 
+#include "board.h"
 #include <cstdlib>
 #include <iostream>
+
+template <typename T>
+int compute_visibility(T begin, T end) {
+  int visible_cells = 0;
+  int highest_value = 0;
+
+  for (auto i = begin; i != end; ++i) {
+    if (*i > highest_value) {
+      highest_value = *i;
+      ++visible_cells;
+    }
+  }
+
+  return visible_cells;
+}
 
 Puzzle::Puzzle(const int size)
   : size_(size) {
@@ -32,6 +48,25 @@ Puzzle::Puzzle(const int size)
   bottom_.resize(size_);
   left_.resize(size_);
   right_.resize(size_);
+}
+
+Puzzle::Puzzle(const Board& board) : Puzzle(board.size()) {
+#if 0
+  // Fill the top and bottom vectors
+  for (int column = 0; column < size_; ++column) {
+    top_[column] = compute_visibility(board.column_cbegin(column),
+                                      board.column_cend(column));
+    bottom_[column] = compute_visibility(board.column_crbegin(column),
+                                         board.column_crend(column));
+  }
+#endif
+  // Fill the left and right vectors
+  for (int row = 0; row < size_; ++row) {
+    left_[row] = compute_visibility(board.row_cbegin(row),
+                                    board.row_cend(row));
+    right_[row] = compute_visibility(board.row_crbegin(row),
+                                     board.row_crend(row));
+  }
 }
 
 void Puzzle::print() const {

@@ -42,7 +42,7 @@ class Board {
   Board(const int size, const BoardInitializer initializer);
 
   // Retrieves the board size.
-  int size() const;
+  int size() const { return size_; }
 
   // Returns the entry at the specified row and column. This could be
   // zero if the cell was never written to.

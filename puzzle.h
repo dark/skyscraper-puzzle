@@ -27,7 +27,7 @@ public:
   explicit Puzzle(const int size);
 
   // Creates a puzzle based on an existing, solved board.
-  explicit Puzzle(const Board &board);
+  explicit Puzzle(const Board& board);
 
   // Prints the puzzle to standard output.
   void print() const;

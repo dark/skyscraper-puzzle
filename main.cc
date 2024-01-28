@@ -23,7 +23,7 @@ int main(void) {
   Board b{5, BoardInitializer::DIAGONAL_INCREASING};
   b.print();
 
-  Puzzle p{5};
+  Puzzle p{b};
   p.print();
 
   return 0;

@@ -16,15 +16,39 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "board.h"
 #include "puzzle.h"
 
-int main(void) {
-  Board b{5, BoardInitializer::DIAGONAL_INCREASING};
-  b.print();
+#include <cstdlib>
+#include <iostream>
 
-  Puzzle p{5};
-  p.print();
+Puzzle::Puzzle(const int size)
+  : size_(size) {
+  if (size_ <= 0) {
+    std::cerr << "Bad puzzle size: " << size_ << std::endl;
+    std::abort();
+  }
 
-  return 0;
+  top_.resize(size_);
+  bottom_.resize(size_);
+  left_.resize(size_);
+  right_.resize(size_);
+}
+
+void Puzzle::print() const {
+  std::cout << "  ";
+  for (const int v: top_) {
+    std::cout << v << " ";
+  }
+  std::cout << std::endl;
+
+  for (int row = 0; row < size_; ++row) {
+    std::cout << left_[row] << "           "
+              << right_[row] << std::endl;
+  }
+
+  std::cout << "  ";
+  for (const int v: bottom_) {
+    std::cout << v << " ";
+  }
+  std::cout << std::endl;
 }

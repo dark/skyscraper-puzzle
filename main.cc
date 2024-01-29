@@ -23,9 +23,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "board.h"
+#include "create.h"
 #include "options.h"
-#include "puzzle.h"
 
 bool parse_long(const char* nptr, long* result) {
   char* endptr = NULL;
@@ -148,17 +147,7 @@ int main(int argc, char *argv[]) {
   case ProgramMode::UNSPECIFIED:
   case ProgramMode::PARSE_ERROR:
     exit(EXIT_FAILURE);
-#if 0
   case ProgramMode::CREATE:
-    exit(Create(options));
-#endif
+    exit(CreateBoard(options));
   }
-
-  Board b{5, BoardInitializer::DIAGONAL_INCREASING};
-  b.print();
-
-  Puzzle p{b};
-  p.print();
-
-  exit(EXIT_SUCCESS);
 }

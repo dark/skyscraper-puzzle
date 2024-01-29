@@ -25,6 +25,7 @@ project(skyscraper-puzzle
 add_executable(skyscraper
   board.cc
   board_iterators.cc
+  create.cc
   main.cc
   puzzle.cc
 )

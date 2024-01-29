@@ -23,7 +23,11 @@
 
 enum class ProgramMode {
   UNSPECIFIED = 0,
+  // Implicit modes (the argument parser selects them implicitly)
   PARSE_ERROR,
+  HELP,
+  // Explicit modes (the argument parser selects them by reading the
+  // commandline)
   CREATE,
 };
 

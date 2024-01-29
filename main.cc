@@ -43,11 +43,12 @@ ProgramOptions parse_options(int argc, char *argv[]) {
     {"seed",          required_argument, NULL, 's'},
     {"output-file",   required_argument, NULL, 'o'},
     {"solution-file", required_argument, NULL, 'f'},
+    {"help",          no_argument,       NULL, 'h'},
     {NULL, 0, NULL, 0}
   };
 
   while (true) {
-    const int opt = getopt_long(argc, argv, "m:z:s:o:f:",
+    const int opt = getopt_long(argc, argv, "m:z:s:o:f:h",
                                 long_options, NULL);
 
     if (opt == -1)
@@ -95,6 +96,9 @@ ProgramOptions parse_options(int argc, char *argv[]) {
     case 'f':
       options.board_output_file = optarg;
       break;
+    case 'h':
+      options.mode = ProgramMode::HELP;
+      break;
     case '?':
       // Set error and return early.
       options.mode = ProgramMode::PARSE_ERROR;
@@ -106,12 +110,12 @@ ProgramOptions parse_options(int argc, char *argv[]) {
       break;
     }
 
-    if (options.mode == ProgramMode::PARSE_ERROR)
-      // Stop early in case of parse errors.
+    if (options.mode == ProgramMode::PARSE_ERROR || options.mode == ProgramMode::HELP)
+      // Stop early in case of parse errors, or if the help output was requested.
       break;
   }
 
-  if (options.mode != ProgramMode::PARSE_ERROR && optind < argc) {
+  if (options.mode != ProgramMode::PARSE_ERROR && options.mode != ProgramMode::HELP && optind < argc) {
     std::cerr << "ERROR: Unrecognized parameters on the commandline:";
     while (optind < argc)
       std::cerr << " " << argv[optind++];
@@ -119,12 +123,13 @@ ProgramOptions parse_options(int argc, char *argv[]) {
     options.mode = ProgramMode::PARSE_ERROR;
   }
 
-
   if (options.mode == ProgramMode::UNSPECIFIED) {
     std::cerr << "ERROR: Application mode (-m/--mode) not provided" << std::endl;
   }
-  if (options.mode == ProgramMode::UNSPECIFIED || options.mode == ProgramMode::PARSE_ERROR) {
-    std::cerr << std::endl;
+  if (options.mode == ProgramMode::UNSPECIFIED || options.mode == ProgramMode::PARSE_ERROR || options.mode == ProgramMode::HELP) {
+    if (options.mode != ProgramMode::HELP)
+      // This is a minor visual impovement, since other modes print other output beforehand.
+      std::cerr << std::endl;
     std::cerr << "Usage: " << argv[0]
               << " (-m|--mode) mode [-z|--size size] [-s|--seed seed]"
               << " [-o|--output-file filename] [-f|--solution-file filename] "
@@ -147,6 +152,8 @@ int main(int argc, char *argv[]) {
   case ProgramMode::UNSPECIFIED:
   case ProgramMode::PARSE_ERROR:
     exit(EXIT_FAILURE);
+  case ProgramMode::HELP:
+    exit(EXIT_SUCCESS);
   case ProgramMode::CREATE:
     exit(CreateBoard(options));
   }

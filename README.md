@@ -2,7 +2,7 @@
 
 [![Build and test](https://github.com/dark/skyscraper-puzzle/actions/workflows/cmake-single-platform.yml/badge.svg)](https://github.com/dark/skyscraper-puzzle/actions/workflows/cmake-single-platform.yml)
 
-This is a toy project to create a generator and solver of **skyscraper
+This is a toy project to write a generator and solver of **skyscraper
 puzzles**.
 
 ```
@@ -17,9 +17,10 @@ Where:
 
 ## Puzzle rules and objectives
 
-A skyscraper puzzle is generated around a NxN board of numbers. Each
-number on the board is between 1 and N, and each row and column of the
-board contains each number (1 through N) exactly once. For example:
+A skyscraper puzzle is generated around a `N x N` board of
+numbers. Each number on the board is between `1` and `N`, and each row
+and column of the board contains each number (`1` through `N`) exactly
+once. For example:
 
 ```
 4 2 5 1 3
@@ -30,7 +31,7 @@ board contains each number (1 through N) exactly once. For example:
 ```
 
 The idea is that the board is a neighborhood, and each square
-represents a skyscraper of a certain height (1 through N).
+represents a skyscraper of a certain height (`1` through `N`).
 
 The puzzle does not provide the content of the board, as the goal is
 to find the numbers in each square. Instead, the puzzle provides
@@ -81,3 +82,5 @@ Or, if we remove the contents of the board:
 2         3
  2 1 3 2 3
 ```
+
+You can find additional instructions at: https://www.google.com/search?q=skyscraper+puzzle+rules

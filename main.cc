@@ -131,8 +131,8 @@ ProgramOptions parse_options(int argc, char *argv[]) {
       // This is a minor visual impovement, since other modes print other output beforehand.
       std::cerr << std::endl;
     std::cerr << "Usage: " << argv[0]
-              << " (-m|--mode) mode [-z|--size size] [-s|--seed seed]"
-              << " [-o|--output-file filename] [-f|--solution-file filename] "
+              << " (-m|--mode) MODE [-z|--size SIZE] [-s|--seed SEED]"
+              << " [-o|--output-file FILENAME] [-f|--solution-file FILENAME] "
               << std::endl;
     std::cerr << "Where:" << std::endl
               << "  --mode is the program execution mode (only 'create' is supported now)" << std::endl

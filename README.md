@@ -6,7 +6,7 @@ This is a toy project to write a generator and solver of **skyscraper
 puzzles**.
 
 ```
-Usage: ./skyscraper (-m|--mode) mode [-z|--size size] [-s|--seed seed] [-o|--output-file filename] [-f|--solution-file filename] 
+Usage: ./skyscraper (-m|--mode) MODE [-z|--size SIZE] [-s|--seed SEED] [-o|--output-file FILENAME] [-f|--solution-file FILENAME] 
 Where:
   --mode is the program execution mode (only 'create' is supported now)
   --size is the board size (default: 5)

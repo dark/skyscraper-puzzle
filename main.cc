@@ -21,6 +21,7 @@
 #include <iostream>
 #include <getopt.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "board.h"
 #include "options.h"
@@ -56,15 +57,20 @@ ProgramOptions parse_options(int argc, char *argv[]) {
 
     switch (opt) {
     case 'm':
-#error TODO
+      if (strcmp(optarg, "create") == 0) {
+        options.mode = ProgramMode::CREATE;
+      } else {
+        std::cerr << "ERROR: Unrecognized program mode: " << optarg << std::endl;
+        options.mode = ProgramMode::PARSE_ERROR;
+      }
       break;
     case 'z': {
       long size;
       if (!parse_long(optarg, &size)) {
-        std::cerr << "Cannot parse board size: " << optarg << std::endl;
+        std::cerr << "ERROR: Cannot parse board size: " << optarg << std::endl;
         options.mode = ProgramMode::PARSE_ERROR;
       } else if (size <= 1 || size > UINT16_MAX) {
-        std::cerr << "Invalid board size: " << size << std::endl;
+        std::cerr << "ERROR: Invalid board size: " << size << std::endl;
         options.mode = ProgramMode::PARSE_ERROR;
       } else {
         options.board_size = size;
@@ -74,10 +80,10 @@ ProgramOptions parse_options(int argc, char *argv[]) {
     case 's': {
       long seed;
       if (!parse_long(optarg, &seed)) {
-        std::cerr << "Cannot parse seed value: " << optarg << std::endl;
+        std::cerr << "ERROR: Cannot parse seed value: " << optarg << std::endl;
         options.mode = ProgramMode::PARSE_ERROR;
       } else if (seed <= 0 || seed > UINT32_MAX) {
-        std::cerr << "Invalid seed value: " << seed << std::endl;
+        std::cerr << "ERROR: Invalid seed value: " << seed << std::endl;
         options.mode = ProgramMode::PARSE_ERROR;
       } else {
         options.seed = seed;
@@ -107,7 +113,7 @@ ProgramOptions parse_options(int argc, char *argv[]) {
   }
 
   if (options.mode != ProgramMode::PARSE_ERROR && optind < argc) {
-    std::cerr << "Unrecognized parameters on the commandline:";
+    std::cerr << "ERROR: Unrecognized parameters on the commandline:";
     while (optind < argc)
       std::cerr << " " << argv[optind++];
     std::cerr << std::endl;
@@ -116,9 +122,10 @@ ProgramOptions parse_options(int argc, char *argv[]) {
 
 
   if (options.mode == ProgramMode::UNSPECIFIED) {
-    std::cerr << "Application mode (-m/--mode) not provided" << std::endl;
+    std::cerr << "ERROR: Application mode (-m/--mode) not provided" << std::endl;
   }
   if (options.mode == ProgramMode::UNSPECIFIED || options.mode == ProgramMode::PARSE_ERROR) {
+    std::cerr << std::endl;
     std::cerr << "Usage: " << argv[0]
               << " (-m|--mode) mode [-z|--size size] [-s|--seed seed]"
               << " [-o|--output-file filename] [-f|--solution-file filename] "

@@ -16,13 +16,23 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <climits>
 #include <cstdlib>
 #include <iostream>
 #include <getopt.h>
+#include <stdlib.h>
 
 #include "board.h"
 #include "options.h"
 #include "puzzle.h"
+
+bool parse_long(const char* nptr, long* result) {
+  char* endptr = NULL;
+  *result = strtol(nptr, &endptr, 10);
+  return (*result != LONG_MIN && *result != LONG_MAX &&
+          // man 3 strtol
+          *nptr && !*endptr);
+}
 
 ProgramOptions parse_options(int argc, char *argv[]) {
   ProgramOptions options;
@@ -46,15 +56,40 @@ ProgramOptions parse_options(int argc, char *argv[]) {
 
     switch (opt) {
     case 'm':
-      continue;
-    case 'z':
-      continue;
-    case 's':
-      continue;
+#error TODO
+      break;
+    case 'z': {
+      long size;
+      if (!parse_long(optarg, &size)) {
+        std::cerr << "Cannot parse board size: " << optarg << std::endl;
+        options.mode = ProgramMode::PARSE_ERROR;
+      } else if (size <= 1 || size > UINT16_MAX) {
+        std::cerr << "Invalid board size: " << size << std::endl;
+        options.mode = ProgramMode::PARSE_ERROR;
+      } else {
+        options.board_size = size;
+      }
+      break;
+    }
+    case 's': {
+      long seed;
+      if (!parse_long(optarg, &seed)) {
+        std::cerr << "Cannot parse seed value: " << optarg << std::endl;
+        options.mode = ProgramMode::PARSE_ERROR;
+      } else if (seed <= 0 || seed > UINT32_MAX) {
+        std::cerr << "Invalid seed value: " << seed << std::endl;
+        options.mode = ProgramMode::PARSE_ERROR;
+      } else {
+        options.seed = seed;
+      }
+      break;
+    }
     case 'o':
-      continue;
+      options.puzzle_output_file = optarg;
+      break;
     case 'f':
-      continue;
+      options.board_output_file = optarg;
+      break;
     case '?':
       // Set error and return early.
       options.mode = ProgramMode::PARSE_ERROR;
@@ -65,6 +100,10 @@ ProgramOptions parse_options(int argc, char *argv[]) {
       options.mode = ProgramMode::PARSE_ERROR;
       break;
     }
+
+    if (options.mode == ProgramMode::PARSE_ERROR)
+      // Stop early in case of parse errors.
+      break;
   }
 
   if (options.mode != ProgramMode::PARSE_ERROR && optind < argc) {

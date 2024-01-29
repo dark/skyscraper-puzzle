@@ -29,7 +29,7 @@
 // How many random iterations we should perform while shuffling.
 constexpr long RANDOM_ITERATIONS = 100000;
 
-void ShuffleBoard(Board& b, const ProgramOptions& options) {
+bool ShuffleBoard(Board& b, const ProgramOptions& options) {
   // Create and seed a random number generator
   std::mt19937 generator;
   if (options.seed > 0) {
@@ -41,19 +41,27 @@ void ShuffleBoard(Board& b, const ProgramOptions& options) {
   // Create the distributions that we will use to choose whether to
   // swap rows and columns, and which specific indices to swap.
   std::bernoulli_distribution row_column_chooser{0.5};
-  std::uniform_int_distribution<int> index_chooser{1, b.size()};
+  std::uniform_int_distribution<int> index_chooser{0, b.size() - 1};
   for (int i = 0; i < RANDOM_ITERATIONS; ++i) {
     const int first = index_chooser(generator);
     const int second = index_chooser(generator);
 
     if (row_column_chooser(generator)) {
       // Swap rows
-      b.swap_rows(first, second);
+      if (!b.swap_rows(first, second)) {
+        std::cerr << "Failed to swap rows {" << first << ", " << second << "}" << std::endl;
+        return false;
+      }
     } else {
       // Swap columns
-      b.swap_columns(first, second);
+      if (!b.swap_columns(first, second)) {
+        std::cerr << "Failed to swap columns {" << first << ", " << second << "}" << std::endl;
+        return false;
+      }
     }
   }
+
+  return true;
 }
 
 int CreateBoard(const ProgramOptions& options) {
@@ -61,7 +69,10 @@ int CreateBoard(const ProgramOptions& options) {
   Board b{options.board_size, BoardInitializer::DIAGONAL_INCREASING};
 
   // Shuffle randomly based on options
-  ShuffleBoard(b, options);
+  if (!ShuffleBoard(b, options)) {
+    std::cerr << "ERROR: something went wrong while shuffling the board" << std::endl;
+    return EXIT_FAILURE;
+  }
 
   // Print board to the desired location.
   {

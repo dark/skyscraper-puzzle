@@ -19,17 +19,31 @@
 #include "create.h"
 
 #include <cstdlib>
+#include <fstream>
 
 #include "board.h"
 #include "options.h"
 #include "puzzle.h"
 
 int CreateBoard(const ProgramOptions& options) {
-  Board b{5, BoardInitializer::DIAGONAL_INCREASING};
-  b.print();
+  // Create a board.
+  Board b{options.board_size, BoardInitializer::DIAGONAL_INCREASING};
 
+  // Shuffle randomly based on options
+  // FIXME
+
+  // Print board to the desired location.
+  {
+    std::ofstream out{options.board_output_file, std::ios::out};
+    b.print(out);
+  }
+
+  // Genearte puzzle and print to the desired location.
   Puzzle p{b};
-  p.print();
+  {
+    std::ofstream out{options.puzzle_output_file, std::ios::out};
+    p.print(out);
+  }
 
   return EXIT_SUCCESS;
 }

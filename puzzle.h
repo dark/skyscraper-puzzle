@@ -19,6 +19,8 @@
 #ifndef PUZZLE_H
 #define PUZZLE_H
 
+#include <iostream>
+
 #include "board.h"
 
 class Puzzle {
@@ -29,8 +31,8 @@ public:
   // Creates a puzzle based on an existing, solved board.
   explicit Puzzle(const Board& board);
 
-  // Prints the puzzle to standard output.
-  void print() const;
+  // Prints the puzzle to the provided output stream.
+  void print(std::ostream &ostream) const;
 
 private:
   const int size_;

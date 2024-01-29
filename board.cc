@@ -61,15 +61,15 @@ int Board::at(const int row, const int column) const {
   return board_[row][column];
 }
 
-void Board::print() const {
+void Board::print(std::ostream &ostream) const {
   // Define how many digits are required, at max, to print each value in this board.
   const int value_width = std::floor(std::log10(size_)) + 1;
 
   for (int row = 0; row < size_; ++row) {
     for (int column = 0; column < size_; ++column) {
-      std::cout << std::setw(value_width) << board_[row][column] << " ";
+      ostream << std::setw(value_width) << board_[row][column] << " ";
     }
-    std::cout << std::endl;
+    ostream << std::endl;
   }
 }
 

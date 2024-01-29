@@ -70,25 +70,25 @@ Puzzle::Puzzle(const Board& board) : Puzzle(board.size()) {
   }
 }
 
-void Puzzle::print() const {
+void Puzzle::print(std::ostream &ostream) const {
   // Define how many digits are required, at max, to print each value in this puzzle.
   const int value_width = std::floor(std::log10(size_)) + 1;
 
-  std::cout << std::setw(value_width) << " ";
+  ostream << std::setw(value_width) << " ";
   for (const int v: top_) {
-    std::cout << std::setw(value_width) << v << " ";
+    ostream << std::setw(value_width) << v << " ";
   }
-  std::cout << std::endl;
+  ostream << std::endl;
 
   for (int row = 0; row < size_; ++row) {
-    std::cout << std::setw(value_width) << left_[row]
-              << std::setw((value_width + 1) * size_ - 1) << ""
-              << std::setw(value_width) << right_[row] << std::endl;
+    ostream << std::setw(value_width) << left_[row]
+            << std::setw((value_width + 1) * size_ - 1) << ""
+            << std::setw(value_width) << right_[row] << std::endl;
   }
 
-  std::cout << std::setw(value_width) << " ";
+  ostream << std::setw(value_width) << " ";
   for (const int v: bottom_) {
-    std::cout << std::setw(value_width) << v << " ";
+    ostream << std::setw(value_width) << v << " ";
   }
-  std::cout << std::endl;
+  ostream << std::endl;
 }

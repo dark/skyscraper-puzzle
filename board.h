@@ -19,7 +19,9 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <iostream>
 #include <vector>
+
 #include "board_iterators.h"
 
 // Defines various ways to initialize a new board.
@@ -65,8 +67,8 @@ class Board {
   // is invalid, returns false.
   bool is_column_valid(const int column) const;
 
-  // Prints the board to standard output.
-  void print() const;
+  // Prints the board to the provided output stream.
+  void print(std::ostream &ostream) const;
 
   // Swaps two rows by index, if both indices are valid, and returns
   // true. Otherwise, does nothing and returns false.

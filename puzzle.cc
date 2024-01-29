@@ -18,9 +18,12 @@
 
 #include "puzzle.h"
 
-#include "board.h"
+#include <cmath>
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
+
+#include "board.h"
 
 template <typename T>
 int compute_visibility(T begin, T end) {
@@ -68,20 +71,24 @@ Puzzle::Puzzle(const Board& board) : Puzzle(board.size()) {
 }
 
 void Puzzle::print() const {
-  std::cout << "  ";
+  // Define how many digits are required, at max, to print each value in this puzzle.
+  const int value_width = std::floor(std::log10(size_)) + 1;
+
+  std::cout << std::setw(value_width) << " ";
   for (const int v: top_) {
-    std::cout << v << " ";
+    std::cout << std::setw(value_width) << v << " ";
   }
   std::cout << std::endl;
 
   for (int row = 0; row < size_; ++row) {
-    std::cout << left_[row] << "           "
-              << right_[row] << std::endl;
+    std::cout << std::setw(value_width) << left_[row]
+              << std::setw((value_width + 1) * size_ - 1) << ""
+              << std::setw(value_width) << right_[row] << std::endl;
   }
 
-  std::cout << "  ";
+  std::cout << std::setw(value_width) << " ";
   for (const int v: bottom_) {
-    std::cout << v << " ";
+    std::cout << std::setw(value_width) << v << " ";
   }
   std::cout << std::endl;
 }

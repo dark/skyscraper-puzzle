@@ -27,7 +27,7 @@
 #include "puzzle.h"
 
 // How many random iterations we should perform while shuffling.
-constexpr long RANDOM_ITERATIONS = 100000;
+constexpr long RANDOM_SHUFFLES = 100000;
 
 bool ShuffleBoard(Board& b, const CreateOptions& options) {
   // Create and seed a random number generator
@@ -42,7 +42,7 @@ bool ShuffleBoard(Board& b, const CreateOptions& options) {
   // swap rows and columns, and which specific indices to swap.
   std::bernoulli_distribution row_column_chooser{0.5};
   std::uniform_int_distribution<int> index_chooser{0, b.size() - 1};
-  for (int i = 0; i < RANDOM_ITERATIONS; ++i) {
+  for (int i = 0; i < RANDOM_SHUFFLES; ++i) {
     const int first = index_chooser(generator);
     const int second = index_chooser(generator);
 

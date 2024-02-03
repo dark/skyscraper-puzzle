@@ -55,7 +55,8 @@ RandomGenerationStep generate_step(const uint16_t row, const uint16_t column,
   std::set_intersection(rows[row].begin(), rows[row].end(),
                         columns[column].begin(), columns[column].end(),
                         std::back_inserter(legal_values));
-  // TODO randomize
+  // Randomize the order of the legal values
+  std::shuffle(legal_values.begin(), legal_values.end(), generator);
   return RandomGenerationStep{.row = row,
                               .column = column,
                               .legal_values = legal_values};

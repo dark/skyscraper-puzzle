@@ -38,7 +38,7 @@ ProgramOptions parse_options(int argc, char *argv[]) {
   ProgramOptions options;
 
   const struct option long_options[] = {
-    {"mode",          required_argument, NULL, 'm'},
+    {"create",        required_argument, NULL, 'c'},
     {"size",          required_argument, NULL, 'z'},
     {"seed",          required_argument, NULL, 's'},
     {"output-file",   required_argument, NULL, 'o'},
@@ -48,7 +48,7 @@ ProgramOptions parse_options(int argc, char *argv[]) {
   };
 
   while (true) {
-    const int opt = getopt_long(argc, argv, "m:z:s:o:f:h",
+    const int opt = getopt_long(argc, argv, "c:z:s:o:f:h",
                                 long_options, NULL);
 
     if (opt == -1)
@@ -56,11 +56,12 @@ ProgramOptions parse_options(int argc, char *argv[]) {
       break;
 
     switch (opt) {
-    case 'm':
-      if (strcmp(optarg, "create") == 0) {
+    case 'c':
+      if (strcmp(optarg, "shuffle") == 0) {
         options.mode = ProgramMode::CREATE;
+        options.create_options.mode = CreateMode::SHUFFLE;
       } else {
-        std::cerr << "ERROR: Unrecognized program mode: " << optarg << std::endl;
+        std::cerr << "ERROR: Unrecognized puzzle creation mode: " << optarg << std::endl;
         options.mode = ProgramMode::PARSE_ERROR;
       }
       break;
@@ -86,7 +87,7 @@ ProgramOptions parse_options(int argc, char *argv[]) {
         std::cerr << "ERROR: Invalid seed value: " << seed << std::endl;
         options.mode = ProgramMode::PARSE_ERROR;
       } else {
-        options.seed = seed;
+        options.create_options.seed = seed;
       }
       break;
     }
@@ -131,15 +132,15 @@ ProgramOptions parse_options(int argc, char *argv[]) {
       // This is a minor visual impovement, since other modes print other output beforehand.
       std::cerr << std::endl;
     std::cerr << "Usage: " << argv[0]
-              << " (-m|--mode) MODE [-z|--size SIZE] [-s|--seed SEED]"
-              << " [-o|--output-file FILENAME] [-f|--solution-file FILENAME] "
+              << " (-c|--create) MODE [-z|--size SIZE] [-s|--seed SEED]"
+              << " [-o|--output-file OUTPUT_FILE] [-f|--solution-file SOLUTION_FILE]"
               << std::endl;
     std::cerr << "Where:" << std::endl
-              << "  --mode is the program execution mode (only 'create' is supported now)" << std::endl
-              << "  --size is the board size (default: 5)" << std::endl
-              << "  --seed is the seed to use for random creation (default: a random seed is used)" << std::endl
-              << "  --output-file is the file where the puzzle should be printed (default: stdout)" << std::endl
-              << "  --solution-file is the file where the solution should be printed (default: not printed)" << std::endl;
+              << "  MODE is the puzzle creation mode (only 'shuffle' is supported now)" << std::endl
+              << "  SIZE is the board size (default: 5)" << std::endl
+              << "  SEED is the seed to use for random creation (default: a random seed is used)" << std::endl
+              << "  OUTPUT_FILE is the file where the puzzle should be printed (default: stdout)" << std::endl
+              << "  SOLUTION_FILE is the file where the solution should be printed (default: not printed)" << std::endl;
   }
 
   return options;

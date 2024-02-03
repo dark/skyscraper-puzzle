@@ -29,7 +29,7 @@
 // How many random iterations we should perform while shuffling.
 constexpr long RANDOM_ITERATIONS = 100000;
 
-bool ShuffleBoard(Board& b, const ProgramOptions& options) {
+bool ShuffleBoard(Board& b, const CreateOptions& options) {
   // Create and seed a random number generator
   std::mt19937 generator;
   if (options.seed > 0) {
@@ -68,9 +68,17 @@ int CreateBoard(const ProgramOptions& options) {
   // Create a board.
   Board b{options.board_size, BoardInitializer::DIAGONAL_INCREASING};
 
-  // Shuffle randomly based on options
-  if (!ShuffleBoard(b, options)) {
-    std::cerr << "ERROR: something went wrong while shuffling the board" << std::endl;
+  // Choose creation algorithm based on options
+  switch (options.create_options.mode) {
+  case CreateMode::SHUFFLE:
+    // Shuffle randomly based on options
+    if (!ShuffleBoard(b, options.create_options)) {
+      std::cerr << "ERROR: something went wrong while shuffling the board" << std::endl;
+      return EXIT_FAILURE;
+    }
+    break;
+  case CreateMode::UNSPECIFIED:
+    std::cerr << "ERROR: invalid creation mode" << std::endl;
     return EXIT_FAILURE;
   }
 

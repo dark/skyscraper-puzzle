@@ -6,13 +6,13 @@ This is a toy project to write a generator and solver of **skyscraper
 puzzles**.
 
 ```
-Usage: ./skyscraper (-m|--mode) MODE [-z|--size SIZE] [-s|--seed SEED] [-o|--output-file FILENAME] [-f|--solution-file FILENAME] 
+Usage: ./skyscraper (-c|--create) MODE [-z|--size SIZE] [-s|--seed SEED] [-o|--output-file OUTPUT_FILE] [-f|--solution-file SOLUTION_FILE]
 Where:
-  --mode is the program execution mode (only 'create' is supported now)
-  --size is the board size (default: 5)
-  --seed is the seed to use for random creation (default: a random seed is used)
-  --output-file is the file where the puzzle should be printed (default: stdout)
-  --solution-file is the file where the solution should be printed (default: not printed)
+  MODE is the puzzle creation mode (only 'shuffle' is supported now)
+  SIZE is the board size (default: 5)
+  SEED is the seed to use for random creation (default: a random seed is used)
+  OUTPUT_FILE is the file where the puzzle should be printed (default: stdout)
+  SOLUTION_FILE is the file where the solution should be printed (default: not printed)
 ```
 
 ## Puzzle rules and objectives

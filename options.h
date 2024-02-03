@@ -31,13 +31,25 @@ enum class ProgramMode {
   CREATE,
 };
 
+enum class CreateMode {
+  UNSPECIFIED = 0,
+  // Randomly shuffles rows and columns, starting from a valid diagonal board.
+  SHUFFLE,
+};
+
+struct CreateOptions {
+  CreateMode mode = CreateMode::UNSPECIFIED;
+  // If unspecified, 'man 2 time' is used.
+  uint32_t seed = 0;
+};
+
 struct ProgramOptions {
   ProgramMode mode = ProgramMode::UNSPECIFIED;
   uint16_t board_size = 5;
-  // If unspecified, 'man 2 time' is used.
-  uint32_t seed = 0;
   const char* puzzle_output_file = "/dev/stdout";
   const char* board_output_file = "/dev/null";
+  // Valid only if 'mode == ProgramMode::CREATE'
+  CreateOptions create_options;
 };
 
 #endif

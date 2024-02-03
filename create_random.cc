@@ -117,8 +117,16 @@ std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937
                 << state.column << "}. This should never happen." << std::endl;
       return std::nullopt;
     }
-    rows[state.row].erase(next_value);
-    columns[state.column].erase(next_value);
+    if (rows[state.row].erase(next_value) != 1) {
+      std::cerr << "FATAL: failed to erase value " << next_value << " from row "
+                << state.row << ". This should never happen." << std::endl;
+      return std::nullopt;
+    }
+    if (columns[state.column].erase(next_value) != 1) {
+      std::cerr << "FATAL: failed to erase value " << next_value << " from column "
+                << state.column << ". This should never happen." << std::endl;
+      return std::nullopt;
+    }
 
     // Are we done?
     if (state.row == board_size - 1 && state.row == board_size - 1) {

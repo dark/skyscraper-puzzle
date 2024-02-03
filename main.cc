@@ -138,7 +138,7 @@ ProgramOptions parse_options(int argc, char *argv[]) {
     std::cerr << "Where:" << std::endl
               << "  MODE is the puzzle creation mode (only 'shuffle' is supported now)" << std::endl
               << "  SIZE is the board size (default: 5)" << std::endl
-              << "  SEED is the seed to use for random creation (default: a random seed is used)" << std::endl
+              << "  SEED is the seed to use for puzzle creation (default: a random seed is used)" << std::endl
               << "  OUTPUT_FILE is the file where the puzzle should be printed (default: stdout)" << std::endl
               << "  SOLUTION_FILE is the file where the solution should be printed (default: not printed)" << std::endl;
   }

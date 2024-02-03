@@ -23,6 +23,6 @@
 
 // Creates a board given the provided options. Returns a value
 // compatible with 'man 3 exit'.
-int CreateBoard(const ProgramOptions& options);
+int create_board(const ProgramOptions& options);
 
 #endif

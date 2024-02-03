@@ -156,6 +156,6 @@ int main(int argc, char *argv[]) {
   case ProgramMode::HELP:
     exit(EXIT_SUCCESS);
   case ProgramMode::CREATE:
-    exit(CreateBoard(options));
+    exit(create_board(options));
   }
 }

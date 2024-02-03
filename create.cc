@@ -21,6 +21,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <random>
+#include <optional>
 
 #include "board.h"
 #include "options.h"
@@ -29,7 +30,10 @@
 // How many random iterations we should perform while shuffling.
 constexpr long RANDOM_SHUFFLES = 100000;
 
-bool ShuffleBoard(Board& b, const CreateOptions& options) {
+std::optional<Board> create_shuffle_board(const uint16_t board_size, const CreateOptions& options) {
+  // Create a board.
+  Board b{board_size, BoardInitializer::DIAGONAL_INCREASING};
+
   // Create and seed a random number generator
   std::mt19937 generator;
   if (options.seed > 0) {
@@ -50,46 +54,48 @@ bool ShuffleBoard(Board& b, const CreateOptions& options) {
       // Swap rows
       if (!b.swap_rows(first, second)) {
         std::cerr << "Failed to swap rows {" << first << ", " << second << "}" << std::endl;
-        return false;
+        return std::nullopt;
       }
     } else {
       // Swap columns
       if (!b.swap_columns(first, second)) {
         std::cerr << "Failed to swap columns {" << first << ", " << second << "}" << std::endl;
-        return false;
+        return std::nullopt;
       }
     }
   }
 
-  return true;
+  return b;
 }
 
-int CreateBoard(const ProgramOptions& options) {
-  // Create a board.
-  Board b{options.board_size, BoardInitializer::DIAGONAL_INCREASING};
-
-  // Choose creation algorithm based on options
+std::optional<Board> choose_creation_algorithm(const ProgramOptions& options) {
+ // Choose creation algorithm based on options
   switch (options.create_options.mode) {
   case CreateMode::SHUFFLE:
-    // Shuffle randomly based on options
-    if (!ShuffleBoard(b, options.create_options)) {
-      std::cerr << "ERROR: something went wrong while shuffling the board" << std::endl;
-      return EXIT_FAILURE;
-    }
-    break;
+    return create_shuffle_board(options.board_size, options.create_options);
   case CreateMode::UNSPECIFIED:
     std::cerr << "ERROR: invalid creation mode" << std::endl;
+    return std::nullopt;
+  }
+  std::cerr << "FATAL: invalid creation mode" << std::endl;
+  return std::nullopt;
+}
+
+int create_board(const ProgramOptions& options) {
+  std::optional<Board> b = choose_creation_algorithm(options);
+  if (!b.has_value()) {
+    std::cerr << "ERROR: something went wrong while shuffling the board" << std::endl;
     return EXIT_FAILURE;
   }
 
   // Print board to the desired location.
   {
     std::ofstream out{options.board_output_file, std::ios::out};
-    b.print(out);
+    b->print(out);
   }
 
   // Generate puzzle and print to the desired location.
-  Puzzle p{b};
+  Puzzle p{*b};
   {
     std::ofstream out{options.puzzle_output_file, std::ios::out};
     p.print(out);

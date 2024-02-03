@@ -8,7 +8,7 @@ puzzles**.
 ```
 Usage: ./skyscraper (-c|--create) MODE [-z|--size SIZE] [-s|--seed SEED] [-o|--output-file OUTPUT_FILE] [-f|--solution-file SOLUTION_FILE]
 Where:
-  MODE is the puzzle creation mode (only 'shuffle' is supported now)
+  MODE is the puzzle creation mode ('shuffle' or 'random')
   SIZE is the board size (default: 5)
   SEED is the seed to use for puzzle creation (default: a random seed is used)
   OUTPUT_FILE is the file where the puzzle should be printed (default: stdout)

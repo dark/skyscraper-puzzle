@@ -60,6 +60,9 @@ ProgramOptions parse_options(int argc, char *argv[]) {
       if (strcmp(optarg, "shuffle") == 0) {
         options.mode = ProgramMode::CREATE;
         options.create_options.mode = CreateMode::SHUFFLE;
+      } else if (strcmp(optarg, "random") == 0) {
+        options.mode = ProgramMode::CREATE;
+        options.create_options.mode = CreateMode::RANDOM;
       } else {
         std::cerr << "ERROR: Unrecognized puzzle creation mode: " << optarg << std::endl;
         options.mode = ProgramMode::PARSE_ERROR;
@@ -136,7 +139,7 @@ ProgramOptions parse_options(int argc, char *argv[]) {
               << " [-o|--output-file OUTPUT_FILE] [-f|--solution-file SOLUTION_FILE]"
               << std::endl;
     std::cerr << "Where:" << std::endl
-              << "  MODE is the puzzle creation mode (only 'shuffle' is supported now)" << std::endl
+              << "  MODE is the puzzle creation mode ('shuffle' or 'random')" << std::endl
               << "  SIZE is the board size (default: 5)" << std::endl
               << "  SEED is the seed to use for puzzle creation (default: a random seed is used)" << std::endl
               << "  OUTPUT_FILE is the file where the puzzle should be printed (default: stdout)" << std::endl

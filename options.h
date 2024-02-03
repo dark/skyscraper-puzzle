@@ -35,6 +35,8 @@ enum class CreateMode {
   UNSPECIFIED = 0,
   // Randomly shuffles rows and columns, starting from a valid diagonal board.
   SHUFFLE,
+  // Generates a fully random board, from the empty state
+  RANDOM,
 };
 
 struct CreateOptions {

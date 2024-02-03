@@ -24,6 +24,7 @@
 #include <optional>
 
 #include "board.h"
+#include "create_random.h"
 #include "options.h"
 #include "puzzle.h"
 
@@ -73,6 +74,8 @@ std::optional<Board> choose_creation_algorithm(const ProgramOptions& options) {
   switch (options.create_options.mode) {
   case CreateMode::SHUFFLE:
     return create_shuffle_board(options.board_size, generator);
+  case CreateMode::RANDOM:
+    return create_random_board(options.board_size, generator);
   case CreateMode::UNSPECIFIED:
     std::cerr << "ERROR: invalid creation mode" << std::endl;
     return std::nullopt;

@@ -32,16 +32,10 @@
 // How many random iterations we should perform while shuffling.
 constexpr long RANDOM_SHUFFLES = 100000;
 
-// Representation of a step of the random generation algorithm
-struct RandomGenerationStep {
-  uint16_t row;
-  uint16_t column;
-  std::set<int> legal_values;
-};
-
-// Generate a value tracker suitable for create_random_board()
-std::vector<std::set<int>> generate_trackers(const uint16_t board_size) {
-  std::vector<std::set<int>> result;
+// Generate a leftover value tracker suitable for create_random_board()
+using LeftoverTracker = std::vector<std::set<int>>;
+LeftoverTracker generate_trackers(const uint16_t board_size) {
+  LeftoverTracker result;
   result.resize(board_size);
   for (int i = 0; i < board_size; ++i) {
     for (int j = 0; j < board_size; ++j) {
@@ -52,19 +46,48 @@ std::vector<std::set<int>> generate_trackers(const uint16_t board_size) {
   return result;
 }
 
+// Representation of a step of the random generation algorithm
+struct RandomGenerationStep {
+  uint16_t row;
+  uint16_t column;
+  std::deque<int> legal_values;
+};
+RandomGenerationStep generate_step(const int row, const int column,
+                                   const LeftoverTracker& rows, const LeftoverTracker& columns,
+                                   std::mt19937& generator) {
+  std::deque<int> legal_values;
+  std::set_intersection(rows[row].begin(), rows[row].end(),
+                        columns[column].begin(), columns[column].end(),
+                        std::back_inserter(legal_values));
+  return RandomGenerationStep{.row=0,
+                              .column=0,
+                              .legal_values = legal_values};
+}
+
 std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937& generator) {
   // Create an empty board.
   Board b{board_size, BoardInitializer::EMPTY};
 
   // Keep track of which values we have not used yet in each row and column
-  std::vector<std::set<int>> rows = generate_trackers(board_size);
-  std::vector<std::set<int>> columns = generate_trackers(board_size);
+  LeftoverTracker rows = generate_trackers(board_size);
+  LeftoverTracker columns = generate_trackers(board_size);
 
   // Initialize the algorithm state
   std::stack<RandomGenerationStep> state;
   state.push({.row=0, .column=0, .legal_values = rows[0]});
 
+  // Main random generation loop
   while (!state.empty()) {
+    RandomGenerationStep& top = state.top();
+    // If there are no more legal options in the current board cell,
+    // reset it to 'empty' and go back to the previous one.
+    if (top.legal_values.empty()) {
+      b.clear(top.row, top.column);
+      state.pop();
+      continue;
+    }
+
+    // FIXME
   }
 
   std::cerr << "FATAL: failed to randomly generate a board. This should never happen." << std::endl;

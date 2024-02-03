@@ -18,6 +18,7 @@
 
 #include "create_random.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <random>
 #include <optional>
@@ -26,8 +27,9 @@
 
 #include "board.h"
 
-// Generate a leftover value tracker suitable for create_random_board()
 using LeftoverTracker = std::vector<std::set<int>>;
+// Generates a leftover value tracker suitable for a board of the
+// given size.
 LeftoverTracker generate_trackers(const uint16_t board_size) {
   LeftoverTracker result;
   result.resize(board_size);
@@ -53,6 +55,7 @@ RandomGenerationStep generate_step(const int row, const int column,
   std::set_intersection(rows[row].begin(), rows[row].end(),
                         columns[column].begin(), columns[column].end(),
                         std::back_inserter(legal_values));
+  // TODO randomize
   return RandomGenerationStep{.row=0,
                               .column=0,
                               .legal_values = legal_values};
@@ -68,7 +71,7 @@ std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937
 
   // Initialize the algorithm state
   std::stack<RandomGenerationStep> state;
-  state.push({.row=0, .column=0, .legal_values = rows[0]});
+  state.push(generate_step(/*row=*/0, /*column=*/0, rows, columns, generator));
 
   // Main random generation loop
   while (!state.empty()) {

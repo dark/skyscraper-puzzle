@@ -106,8 +106,18 @@ std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937
     // restore the leftover trackers.
     const int current_value = b.at(state.row, state.column);
     if (current_value != 0) {
-      rows[state.row].insert(current_value);
-      columns[state.column].insert(current_value);
+      auto [r_i, r_inserted] = rows[state.row].insert(current_value);
+      if (!r_inserted) {
+        std::cerr << "FATAL: failed to insert value " << current_value << " into row "
+                  << state.row << ". This should never happen." << std::endl;
+        return std::nullopt;
+      }
+      auto [c_i, c_inserted] = columns[state.column].insert(current_value);
+      if (!c_inserted) {
+        std::cerr << "FATAL: failed to insert value " << current_value << " into column "
+                  << state.column << ". This should never happen." << std::endl;
+        return std::nullopt;
+      }
     }
 
     // Take and use the next legal value for the current cell.

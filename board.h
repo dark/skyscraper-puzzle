@@ -56,6 +56,10 @@ class Board {
   // previously-valid board into an invalid one.
   bool set(const int value, const int row, const int column);
 
+  // Clears the entry at the specified row and column. This will make
+  // the board invalid.
+  void clear(const int row, const int column);
+
   // Returns whether the entire board is valid.
   bool is_valid() const;
 

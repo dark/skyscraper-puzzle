@@ -61,6 +61,29 @@ int Board::at(const int row, const int column) const {
   return board_[row][column];
 }
 
+bool Board::set(const int value, const int row, const int column) {
+  if (value < 1 || value > size_) {
+    std::cerr << "Attempted to write bad value: " << value << std::endl;
+    return false;
+  }
+  if (row < 0 || row >= size_ || row < 0 || row >= size_) {
+    std::cerr << "Bad access at {" << row << ", " << column << "}" << std::endl;
+    std::abort();
+  }
+
+  board_[row][column] = value;
+  return true;
+}
+
+void Board::clear(const int row, const int column) {
+  if (row < 0 || row >= size_ || row < 0 || row >= size_) {
+    std::cerr << "Bad access at {" << row << ", " << column << "}" << std::endl;
+    std::abort();
+  }
+
+  board_[row][column] = 0;
+}
+
 void Board::print(std::ostream &ostream) const {
   // Define how many digits are required, at max, to print each value in this board.
   const int value_width = std::floor(std::log10(size_)) + 1;

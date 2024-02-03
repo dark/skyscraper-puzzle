@@ -52,7 +52,7 @@ class Board {
 
   // Sets the entry at the specified row and column, and returns
   // whether the write was successful. The write is disallowed if the
-  // value is < 1 or >= size. Note that a write could turn a
+  // value is < 1 or > size. Note that a write could turn a
   // previously-valid board into an invalid one.
   bool set(const int value, const int row, const int column);
 

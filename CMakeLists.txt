@@ -26,6 +26,7 @@ add_executable(skyscraper
   board.cc
   board_iterators.cc
   create.cc
+  create_random.cc
   main.cc
   puzzle.cc
 )

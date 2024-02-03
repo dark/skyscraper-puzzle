@@ -84,6 +84,11 @@ void Board::clear(const int row, const int column) {
   board_[row][column] = 0;
 }
 
+bool Board::is_valid() const {
+  // FIXME implement
+  return true;
+}
+
 void Board::print(std::ostream &ostream) const {
   // Define how many digits are required, at max, to print each value in this board.
   const int value_width = std::floor(std::log10(size_)) + 1;

@@ -67,7 +67,9 @@ std::optional<Board> choose_creation_algorithm(const ProgramOptions& options) {
   if (options.create_options.seed > 0) {
     generator.seed(options.create_options.seed);
   } else {
-    generator.seed(time(NULL));
+    auto seed = time(NULL);
+    std::cout << "Using seed: " << seed << std::endl;
+    generator.seed(seed);
   }
 
   // Choose creation algorithm based on options

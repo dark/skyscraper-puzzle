@@ -64,7 +64,7 @@ RandomGenerationStep generate_step(const uint16_t row, const uint16_t column,
 
 // After how many iterations we should print a status update on the screen.
 constexpr long ITERATIONS_PRINT_STATE = 1000000L;
-constexpr bool DEBUG_FULL_STATE = true;
+constexpr bool DEBUG_FULL_STATE = false;
 
 std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937& generator) {
   // Create an empty board.
@@ -85,7 +85,7 @@ std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937
 
     // Print the iteration number every now and then, for progress.
     if ((++iterations % ITERATIONS_PRINT_STATE) == 0) {
-      std::cout << "Random generation is at iteration: " << iterations << std::endl;
+      std::cout << "Random generation iteration: " << iterations << std::endl;
       if (DEBUG_FULL_STATE) {
         std::cout << "Stack has " << stack.size() << " entries" << std::endl;
         std::cout << "State at the top is row:" << state.row << " column:" << state.column << std::endl;

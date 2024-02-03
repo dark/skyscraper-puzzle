@@ -22,6 +22,8 @@
 #include <fstream>
 #include <random>
 #include <optional>
+#include <set>
+#include <stack>
 
 #include "board.h"
 #include "options.h"
@@ -29,6 +31,45 @@
 
 // How many random iterations we should perform while shuffling.
 constexpr long RANDOM_SHUFFLES = 100000;
+
+// Representation of a step of the random generation algorithm
+struct RandomGenerationStep {
+  uint16_t row;
+  uint16_t column;
+  std::set<int> legal_values;
+};
+
+// Generate a value tracker suitable for create_random_board()
+std::vector<std::set<int>> generate_trackers(const uint16_t board_size) {
+  std::vector<std::set<int>> result;
+  result.resize(board_size);
+  for (int i = 0; i < board_size; ++i) {
+    for (int j = 0; j < board_size; ++j) {
+      result[i].insert(j);
+    }
+  }
+
+  return result;
+}
+
+std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937& generator) {
+  // Create an empty board.
+  Board b{board_size, BoardInitializer::EMPTY};
+
+  // Keep track of which values we have not used yet in each row and column
+  std::vector<std::set<int>> rows = generate_trackers(board_size);
+  std::vector<std::set<int>> columns = generate_trackers(board_size);
+
+  // Initialize the algorithm state
+  std::stack<RandomGenerationStep> state;
+  state.push({.row=0, .column=0, .legal_values = rows[0]});
+
+  while (!state.empty()) {
+  }
+
+  std::cerr << "FATAL: failed to randomly generate a board. This should never happen." << std::endl;
+  return std::nullopt;
+}
 
 std::optional<Board> create_shuffle_board(const uint16_t board_size, std::mt19937& generator) {
   // Create a board.

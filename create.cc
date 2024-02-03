@@ -30,17 +30,9 @@
 // How many random iterations we should perform while shuffling.
 constexpr long RANDOM_SHUFFLES = 100000;
 
-std::optional<Board> create_shuffle_board(const uint16_t board_size, const CreateOptions& options) {
+std::optional<Board> create_shuffle_board(const uint16_t board_size, std::mt19937& generator) {
   // Create a board.
   Board b{board_size, BoardInitializer::DIAGONAL_INCREASING};
-
-  // Create and seed a random number generator
-  std::mt19937 generator;
-  if (options.seed > 0) {
-    generator.seed(options.seed);
-  } else {
-    generator.seed(time(NULL));
-  }
 
   // Create the distributions that we will use to choose whether to
   // swap rows and columns, and which specific indices to swap.
@@ -69,10 +61,18 @@ std::optional<Board> create_shuffle_board(const uint16_t board_size, const Creat
 }
 
 std::optional<Board> choose_creation_algorithm(const ProgramOptions& options) {
- // Choose creation algorithm based on options
+  // Create and seed a random number generator
+  std::mt19937 generator;
+  if (options.create_options.seed > 0) {
+    generator.seed(options.create_options.seed);
+  } else {
+    generator.seed(time(NULL));
+  }
+
+  // Choose creation algorithm based on options
   switch (options.create_options.mode) {
   case CreateMode::SHUFFLE:
-    return create_shuffle_board(options.board_size, options.create_options);
+    return create_shuffle_board(options.board_size, generator);
   case CreateMode::UNSPECIFIED:
     std::cerr << "ERROR: invalid creation mode" << std::endl;
     return std::nullopt;

@@ -141,7 +141,7 @@ std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937
     }
 
     // Are we done?
-    if (state.row == board_size - 1 && state.row == board_size - 1) {
+    if (state.row == board_size - 1 && state.column == board_size - 1) {
       // Yes, do a last sanity check and return the generated board.
       if (!b.is_valid()) {
         std::cerr << "FATAL: failed to vaidate a randomly generated a board. This should never happen." << std::endl;

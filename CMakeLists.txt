@@ -30,4 +30,4 @@ add_executable(skyscraper
   main.cc
   puzzle.cc
 )
-target_compile_options(skyscraper PRIVATE -Wall -O2)
+target_compile_options(skyscraper PRIVATE -Wall)

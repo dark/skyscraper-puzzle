@@ -34,7 +34,7 @@ LeftoverTracker generate_trackers(const uint16_t board_size) {
   LeftoverTracker result;
   result.resize(board_size);
   for (int i = 0; i < board_size; ++i) {
-    for (int j = 0; j < board_size; ++j) {
+    for (int j = 1; j < board_size + 1; ++j) {
       result[i].insert(j);
     }
   }

@@ -81,13 +81,6 @@ std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937
   long iterations = 0;
   while (!stack.empty()) {
     RandomGenerationStep& state = stack.top();
-    // If there are no more legal options in the current board cell,
-    // reset it to 'empty' and go back to the previous one.
-    if (state.legal_values.empty()) {
-      b.clear(state.row, state.column);
-      stack.pop();
-      continue;
-    }
 
     // Print the iteration number every now and then, for progress.
     if ((++iterations % ITERATIONS_PRINT_STATE) == 0) {
@@ -118,6 +111,14 @@ std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937
                   << state.column << ". This should never happen." << std::endl;
         return std::nullopt;
       }
+    }
+
+    // If there are no more legal options in the current board cell,
+    // reset it to 'empty' and go back to the previous one.
+    if (state.legal_values.empty()) {
+      b.clear(state.row, state.column);
+      stack.pop();
+      continue;
     }
 
     // Take and use the next legal value for the current cell.

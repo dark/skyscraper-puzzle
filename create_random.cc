@@ -64,7 +64,11 @@ RandomGenerationStep generate_step(const uint16_t row, const uint16_t column,
 
 // After how many iterations we should print a status update on the screen.
 constexpr long ITERATIONS_PRINT_STATE = 1000000L;
+#ifdef NDEBUG
 constexpr bool DEBUG_FULL_STATE = false;
+#else
+constexpr bool DEBUG_FULL_STATE = true;
+#endif
 
 std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937& generator) {
   // Create an empty board.

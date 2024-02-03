@@ -88,7 +88,7 @@ int CreateBoard(const ProgramOptions& options) {
     b.print(out);
   }
 
-  // Genearte puzzle and print to the desired location.
+  // Generate puzzle and print to the desired location.
   Puzzle p{b};
   {
     std::ofstream out{options.puzzle_output_file, std::ios::out};

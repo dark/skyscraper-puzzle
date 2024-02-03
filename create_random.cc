@@ -94,6 +94,7 @@ std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937
       std::cout << "Random generation is at iteration: " << iterations << std::endl;
       if (DEBUG_FULL_STATE) {
         std::cout << "Stack has " << stack.size() << " entries" << std::endl;
+        std::cout << "State at the top is row:" << state.row << " column:" << state.column << std::endl;
         std::cout << "Partial board state: "  << std::endl;
         b.print(std::cout);
       }

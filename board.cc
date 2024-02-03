@@ -22,6 +22,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <unordered_set>
 
 Board::Board(const int size) : Board(size, BoardInitializer::EMPTY) {}
 
@@ -84,8 +85,49 @@ void Board::clear(const int row, const int column) {
   board_[row][column] = 0;
 }
 
+bool Board::is_row_valid(const int row) const {
+  if (row < 0 || row >= size_) {
+    return false;
+  }
+
+  std::unordered_set<int> expected;
+  for (int i = 1; i <= size_; ++i)
+    expected.insert(i);
+  auto iter = row_cbegin(row);
+  auto end = row_cend(row);
+  for (; iter != end; ++iter)
+    expected.erase(*iter);
+
+  return expected.empty();
+}
+
+bool Board::is_column_valid(const int column) const {
+  if (column < 0 || column >= size_) {
+    return false;
+  }
+
+  std::unordered_set<int> expected;
+  for (int i = 1; i <= size_; ++i)
+    expected.insert(i);
+  auto iter = column_cbegin(column);
+  auto end = column_cend(column);
+  for (; iter != end; ++iter)
+    expected.erase(*iter);
+
+  return expected.empty();
+}
+
 bool Board::is_valid() const {
-  // FIXME implement
+  for (int row = 0; row < size_; ++row) {
+    if (!is_row_valid(row)) {
+      return false;
+    }
+  }
+  for (int column = 0; column < size_; ++column) {
+    if (!is_column_valid(column)) {
+      return false;
+    }
+  }
   return true;
 }
 

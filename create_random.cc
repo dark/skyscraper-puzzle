@@ -48,7 +48,7 @@ struct RandomGenerationStep {
   uint16_t column;
   std::deque<int> legal_values;
 };
-RandomGenerationStep generate_step(const int row, const int column,
+RandomGenerationStep generate_step(const uint16_t row, const uint16_t column,
                                    const LeftoverTracker& rows, const LeftoverTracker& columns,
                                    std::mt19937& generator) {
   std::deque<int> legal_values;
@@ -56,8 +56,8 @@ RandomGenerationStep generate_step(const int row, const int column,
                         columns[column].begin(), columns[column].end(),
                         std::back_inserter(legal_values));
   // TODO randomize
-  return RandomGenerationStep{.row=0,
-                              .column=0,
+  return RandomGenerationStep{.row = row,
+                              .column = column,
                               .legal_values = legal_values};
 }
 

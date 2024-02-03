@@ -87,7 +87,7 @@ std::optional<Board> choose_creation_algorithm(const ProgramOptions& options) {
 int create_board(const ProgramOptions& options) {
   std::optional<Board> b = choose_creation_algorithm(options);
   if (!b.has_value()) {
-    std::cerr << "ERROR: something went wrong while shuffling the board" << std::endl;
+    std::cerr << "ERROR: something went wrong while creating the board" << std::endl;
     return EXIT_FAILURE;
   }
 

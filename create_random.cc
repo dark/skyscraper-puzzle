@@ -61,6 +61,10 @@ RandomGenerationStep generate_step(const int row, const int column,
                               .legal_values = legal_values};
 }
 
+// After how many iterations we should print a status update on the screen.
+constexpr long ITERATIONS_PRINT_STATE = 1000000L;
+constexpr bool DEBUG_FULL_STATE = true;
+
 std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937& generator) {
   // Create an empty board.
   Board b{board_size, BoardInitializer::EMPTY};
@@ -74,6 +78,7 @@ std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937
   stack.push(generate_step(/*row=*/0, /*column=*/0, rows, columns, generator));
 
   // Main random generation loop
+  long iterations = 0;
   while (!stack.empty()) {
     RandomGenerationStep& state = stack.top();
     // If there are no more legal options in the current board cell,
@@ -82,6 +87,16 @@ std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937
       b.clear(state.row, state.column);
       stack.pop();
       continue;
+    }
+
+    // Print the iteration number every now and then, for progress.
+    if ((++iterations % ITERATIONS_PRINT_STATE) == 0) {
+      std::cout << "Random generation is at iteration: " << iterations << std::endl;
+      if (DEBUG_FULL_STATE) {
+        std::cout << "Stack has " << stack.size() << " entries" << std::endl;
+        std::cout << "Partial board state: "  << std::endl;
+        b.print(std::cout);
+      }
     }
 
     // Before moving to the next legal value, check if we are

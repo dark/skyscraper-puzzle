@@ -69,22 +69,59 @@ std::optional<Board> create_random_board(const uint16_t board_size, std::mt19937
   LeftoverTracker rows = generate_trackers(board_size);
   LeftoverTracker columns = generate_trackers(board_size);
 
-  // Initialize the algorithm state
-  std::stack<RandomGenerationStep> state;
-  state.push(generate_step(/*row=*/0, /*column=*/0, rows, columns, generator));
+  // Initialize the algorithm stack holding the state.
+  std::stack<RandomGenerationStep> stack;
+  stack.push(generate_step(/*row=*/0, /*column=*/0, rows, columns, generator));
 
   // Main random generation loop
-  while (!state.empty()) {
-    RandomGenerationStep& top = state.top();
+  while (!stack.empty()) {
+    RandomGenerationStep& state = stack.top();
     // If there are no more legal options in the current board cell,
     // reset it to 'empty' and go back to the previous one.
-    if (top.legal_values.empty()) {
-      b.clear(top.row, top.column);
-      state.pop();
+    if (state.legal_values.empty()) {
+      b.clear(state.row, state.column);
+      stack.pop();
       continue;
     }
 
-    // FIXME
+    // Before moving to the next legal value, check if we are
+    // backtracking: this is determined by checking for the current
+    // value in the current cell. If that's the case, we want to
+    // restore the leftover trackers.
+    const int current_value = b.at(state.row, state.column);
+    if (current_value != 0) {
+      rows[state.row].insert(current_value);
+      columns[state.column].insert(current_value);
+    }
+
+    // Take and use the next legal value for the current cell.
+    int next_value = state.legal_values.front();
+    state.legal_values.pop_front();
+    if (!b.set(next_value, state.row, state.column)) {
+      std::cerr << "FATAL: failed to insert " << next_value << " into {" << state.row << ", "
+                << state.column << "}. This should never happen." << std::endl;
+      return std::nullopt;
+    }
+    rows[state.row].erase(next_value);
+    columns[state.column].erase(next_value);
+
+    // Are we done?
+    if (state.row == board_size - 1 && state.row == board_size - 1) {
+      // Yes, do a last sanity check and return the generated board.
+      if (!b.is_valid()) {
+        std::cerr << "FATAL: failed to vaidate a randomly generated a board. This should never happen." << std::endl;
+        std::cerr << "       This is what was generated:" << std::endl;
+        b.print(std::cerr);
+        return std::nullopt;
+      }
+      return b;
+    }
+
+    // We are not done. Prepare for the next step by moving one column
+    // to the right, or to the next row if the row is complete.
+    const int next_column = (state.column + 1) % board_size;
+    const int next_row = next_column > 0? state.row : state.row + 1;
+    stack.push(generate_step(next_row, next_column, rows, columns, generator));
   }
 
   std::cerr << "FATAL: failed to randomly generate a board. This should never happen." << std::endl;
